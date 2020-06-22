@@ -1,2 +1,2 @@
 # nenech
-auto generate REST API for Slack App by golang
+auto generate API for Slack App by golang
