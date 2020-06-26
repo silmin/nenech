@@ -12,24 +12,28 @@ import (
 )
 
 type CallSlack struct {
-	Name    string `json:"name"`
-	Channel string `json:"channel"`
-	Message string `json:"message"`
+	Name        string `json:"name"`
+	Username    string `json:"username"`
+	Channel     string `json:"channel"`
+	Webhook_url string `json:"webhook_url"`
+	Title       string `json:"title"`
+	Message     string `json:"message"`
+	Color       string `json:"color"`
 }
 
 func (i CallSlack) Post() []error {
-	field := slack.Field{Title: "Message", Value: i.Message}
+	field := slack.Field{Title: i.Title, Value: i.Message}
 
 	attachment := slack.Attachment{}
 	attachment.AddField(field)
-	color := "good"
+	color := i.Color
 	attachment.Color = &color
 	payload := slack.Payload{
-		Username:    USERNAME,
+		Username:    i.Username,
 		Channel:     i.Channel,
 		Attachments: []slack.Attachment{attachment},
 	}
-	err := slack.Send(webhook_urls[i.Channel], "", payload)
+	err := slack.Send(i.Webhook_url, "", payload)
 	if err != nil {
 		return err
 	}
@@ -38,7 +42,7 @@ func (i CallSlack) Post() []error {
 }
 
 func main() {
-	bytes, err := ioutil.ReadFile("configs/test.json")
+	bytes, err := ioutil.ReadFile("configs/.conf.json")
 	if err != nil {
 		log.Fatal(err)
 	}
