@@ -9,6 +9,8 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+
+	"github.com/silmin/nenech/handler"
 )
 
 func getConfigs(dir string) ([]string, error) {
@@ -44,7 +46,7 @@ func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	//e.HTTPErrorHandler = myErrorHandler
+	e.HTTPErrorHandler = handler.MyErrorHandler
 
 	for _, filename := range configs {
 		bytes, err := ioutil.ReadFile(filename)
@@ -60,9 +62,4 @@ func main() {
 
 		e.Start(":8000")
 	}
-}
-
-func myErrorHandler(err error, context echo.Context) {
-	//code := http.StatusInternalServerError
-	context.Logger().Error(err)
 }
