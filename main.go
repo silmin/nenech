@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
 
 func getConfigs(dir string) ([]string, error) {
@@ -40,6 +41,11 @@ func main() {
 		return
 	}
 
+	e := echo.New()
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+	//e.HTTPErrorHandler = myErrorHandler
+
 	for _, filename := range configs {
 		bytes, err := ioutil.ReadFile(filename)
 		if err != nil {
@@ -50,16 +56,13 @@ func main() {
 		if err := json.Unmarshal(bytes, &call_slack); err != nil {
 			log.Fatal(err)
 		}
+		e.GET("/"+call_slack.Endpoint, call_slack.Post)
 
-		var er []error
-		er = call_slack.Post()
-		if er != nil {
-			log.Fatal(er)
-		}
-
-		if err != nil {
-			log.Fatal(err)
-			return
-		}
+		e.Start(":8000")
 	}
+}
+
+func myErrorHandler(err error, context echo.Context) {
+	//code := http.StatusInternalServerError
+	context.Logger().Error(err)
 }

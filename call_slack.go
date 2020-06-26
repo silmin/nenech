@@ -1,7 +1,10 @@
 package main
 
 import (
+	"log"
+
 	"github.com/ashwanthkumar/slack-go-webhook"
+	"github.com/labstack/echo"
 )
 
 type CallSlack struct {
@@ -14,7 +17,7 @@ type CallSlack struct {
 	Color       string `json:"color"`
 }
 
-func (i CallSlack) Post() []error {
+func (i CallSlack) Post(context echo.Context) error {
 	field := slack.Field{Title: i.Title, Value: i.Message}
 
 	attachment := slack.Attachment{}
@@ -25,9 +28,13 @@ func (i CallSlack) Post() []error {
 		Channel:     i.Channel,
 		Attachments: []slack.Attachment{attachment},
 	}
-	err := slack.Send(i.Webhook_url, "", payload)
-	if err != nil {
-		return err
+
+	errs := slack.Send(i.Webhook_url, "", payload)
+	if errs != nil {
+		for _, err := range errs {
+			log.Output(1, err.Error())
+		}
+		return errs[0]
 	}
 
 	return nil
