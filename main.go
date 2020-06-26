@@ -12,7 +12,7 @@ import (
 )
 
 type CallSlack struct {
-	Name        string `json:"name"`
+	Endpoint    string `json:"endpoint"`
 	Username    string `json:"username"`
 	Channel     string `json:"channel"`
 	Webhook_url string `json:"webhook_url"`
