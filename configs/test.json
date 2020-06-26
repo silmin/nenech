@@ -1,5 +1,9 @@
 {
 	"name": "test",
+	"username": "nenech",
 	"channel": "bot-test",
-	"message": "test message"
+	"webhook_url": "xxxxxx",
+	"title": "Message",
+	"message": "test message",
+	"color": "good"
 }
