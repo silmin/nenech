@@ -1,9 +1,0 @@
-{
-	"endpoint": "test",
-	"username": "nenech",
-	"channel": "bot-test",
-	"webhook_url": "https://hooks.slack.com/services/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",
-	"title": "Message",
-	"message": "test message",
-	"color": "good"
-}
