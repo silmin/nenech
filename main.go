@@ -58,7 +58,7 @@ func main() {
 		if err := json.Unmarshal(bytes, &call_slack); err != nil {
 			log.Fatal(err)
 		}
-		e.GET("/"+call_slack.Endpoint, call_slack.Post)
+		e.POST("/"+call_slack.Endpoint, call_slack.Post)
 
 		e.Start(":8000")
 	}
