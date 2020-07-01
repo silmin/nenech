@@ -7,19 +7,63 @@ import (
 	"github.com/labstack/echo"
 )
 
-type CallSlack struct {
-	Endpoint    string `json:"endpoint"`
-	Username    string `json:"username"`
-	Channel     string `json:"channel"`
-	Webhook_url string `json:"webhook_url"`
-	Title       string `json:"title"`
-	Message     string `json:"message"`
-	Color       string `json:"color"`
+type (
+	CallSlack struct {
+		Endpoint    string `json:"endpoint"`
+		Channel     string `json:"channel"`
+		Webhook_url string `json:"webhook_url"`
+
+		Username string `json:"username"`
+		Title    string `json:"title"`
+		Message  string `json:"message"`
+		Color    string `json:"color"`
+	}
+
+	CustomBinder struct{}
+)
+
+func (cb *CustomBinder) Bind(i *CallSlack, context echo.Context) error {
+	if param := context.QueryParam("username"); param != "" {
+		i.Username = param
+	}
+	if param := context.QueryParam("title"); param != "" {
+		i.Title = param
+	}
+	if param := context.QueryParam("message"); param != "" {
+		i.Message = param
+	}
+	if param := context.QueryParam("color"); param != "" {
+		i.Color = param
+	}
+	if param := context.FormValue("username"); param != "" {
+		i.Username = param
+	}
+	if param := context.FormValue("title"); param != "" {
+		i.Title = param
+	}
+	if param := context.FormValue("message"); param != "" {
+		i.Message = param
+	}
+	if param := context.FormValue("color"); param != "" {
+		i.Color = param
+	}
+	return nil
 }
 
 func (i CallSlack) Post(context echo.Context) error {
-	field := slack.Field{Title: i.Title, Value: i.Message}
+	cb := new(CustomBinder)
+	if err := cb.Bind(&i, context); err != nil {
+		return err
+	}
 
+	/*
+		log.Output(1, i.Username)
+		log.Output(1, i.Title)
+		log.Output(1, i.Message)
+		log.Output(1, i.Color)
+	*/
+
+	field := slack.Field{Title: i.Title, Value: i.Message}
 	attachment := slack.Attachment{}
 	attachment.AddField(field)
 	attachment.Color = &i.Color
