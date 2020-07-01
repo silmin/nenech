@@ -1,8 +1,9 @@
 # nenech
 This repo is Slack-Gateway
-dev_env: go1.13.8 darwin/amd64(macos)
 
 GateWay for Slack App by golang from JSON file
+
+dev_env: go1.13.8 darwin/amd64(macos)
 
 ## About
 This GW does a POST for any Slack webhook-url on behalf of the host.
