@@ -37,7 +37,6 @@ func getConfigs(dir string) ([]string, error) {
 
 func main() {
 	configs, err := getConfigs("./configs/")
-	fmt.Println(configs)
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -58,8 +57,10 @@ func main() {
 		if err := json.Unmarshal(bytes, &call_slack); err != nil {
 			log.Fatal(err)
 		}
-		e.POST("/"+call_slack.Endpoint, call_slack.Post)
+		ep_tmp := "/%s"
+		endpoint := fmt.Sprintf(ep_tmp, call_slack.Endpoint)
+		e.GET(endpoint, call_slack.Post)
 
-		e.Start(":8000")
 	}
+	e.Start(":8000")
 }
