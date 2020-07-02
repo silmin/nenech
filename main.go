@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -62,5 +63,8 @@ func main() {
 		e.GET(endpoint, call_slack.Post)
 
 	}
-	e.Start(":8000")
+	port := flag.String("port", "80", "starting port")
+	flag.Parse()
+
+	e.Start(":" + *port)
 }
