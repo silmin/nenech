@@ -40,6 +40,12 @@ move `./nenech`
 go run *.go
 ```
 
+In option, `-port` option can change boot port (default 80)
+```sh
+go run *.go -port=8000
+```
+
+
 ### Client side
 ```sh
 curl http://<your-server-addr>/<specified-endpoint>

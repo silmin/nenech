@@ -56,13 +56,6 @@ func (i CallSlack) Post(context echo.Context) error {
 		return err
 	}
 
-	/*
-		log.Output(1, i.Username)
-		log.Output(1, i.Title)
-		log.Output(1, i.Message)
-		log.Output(1, i.Color)
-	*/
-
 	field := slack.Field{Title: i.Title, Value: i.Message}
 	attachment := slack.Attachment{}
 	attachment.AddField(field)
